@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Inventario {
-    private static ArrayList<Vehiculo> vehiculos;
+    private ArrayList<Vehiculo> vehiculos;
     
-    public Inventario(){
+    public Inventario(Vehiculo carro){
         vehiculos = new ArrayList<>();
-    }
-    
-    public static void agregarVehiculo(Vehiculo carro){
         vehiculos.add(carro);
     }
     
-    public static void listarVehiculo(){
+    public void agregarVehiculo(Vehiculo carro){
+        vehiculos.add(carro);
+    }
+    
+    public void listarVehiculo(){
         System.out.println("***Inventario de vehículos***");
         for(Vehiculo carro : vehiculos){
             System.out.println(carro.toString());
@@ -25,42 +26,50 @@ public class Inventario {
     public static void procesarComandos(){
         Scanner sc = new Scanner(System.in);
         boolean salir = false;
+        boolean existe = false;
+        Inventario inventario = null;
+        Vehiculo carro;
         String comando[] = new String[6];
-        
         do{
             comando = sc.nextLine().split("&");
+            
             switch(comando[0]){
                 case "1":
                     int velocidad = Integer.parseInt(comando[3]);
                     int pasajeros = Integer.parseInt(comando[2]);
                     String placa = comando[4];
                     String tipo = comando[1];
-
+                    
                     if(tipo.equals("Comercial")){
                         int pesoMaximo = Integer.parseInt(comando[5]);
-                        Comercial comercial = new Comercial(velocidad, pasajeros, placa, tipo, pesoMaximo);
-                        Vehiculo.getInventario().agregarVehiculo(comercial);
+                        carro = new Comercial(velocidad, pasajeros, placa, tipo, pesoMaximo);    
+                        
                     }
-
-                    if(tipo.equals("Particular")){
+                    else{
                         String color = comando[5];
-                        Particular particular = new Particular(velocidad, pasajeros, placa, tipo, color);
-                        Vehiculo.getInventario().agregarVehiculo(particular);
+                        carro = new Particular(velocidad, pasajeros, placa, tipo, color);
                     }
+                    
+                    
+                    if(existe == false){
+                        inventario = new Inventario(carro);
+                        existe = true;
+                    }else{
+                        inventario.agregarVehiculo(carro);
+                    }
+                    
                     break;
                 case "2":
-                    listarVehiculo();
+                    inventario.listarVehiculo();
                     break;
                 case "3":
                     salir = true;
             }
         }while(salir == false);
-        
+   
     }
-    
     
     public static void main(String[] args) {
         procesarComandos();
     }
- 
 }

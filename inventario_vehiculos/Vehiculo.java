@@ -6,7 +6,6 @@ public class Vehiculo {
     private int pasajeros;
     private String placa;
     private String tipo;
-    private static Inventario inventario = new Inventario();
     
     public Vehiculo(int velocidad, int pasajeros, String placa, String tipo){
         this.velocidad = velocidad;
@@ -22,7 +21,4 @@ public class Vehiculo {
                 "\tpasajeros: " + pasajeros;
     }
 
-    public static Inventario getInventario() {
-        return inventario;
-    }
 }
